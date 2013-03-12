@@ -1,4 +1,5 @@
 /*!
+
  * Searchable Map Template with Google Fusion Tables
  * http://derekeder.com/searchable_map_template/
  *
