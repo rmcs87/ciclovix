@@ -51,7 +51,7 @@ var MapsLib = {
 
 	geocoder = new google.maps.Geocoder();
 
-	var city = MapsLib.getParam("sessid").city;
+	var city = MapsLib.getParam("city").city;
 	console.log(city);
 	if (city == 'serra'){
 		var myOptions = {
