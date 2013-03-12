@@ -29,25 +29,45 @@ var MapsLib = {
   //example: locationColumn:     "'my location'",
   locationColumn:     "geometry",
 
+  //Vitoria
   map_centroid:       new google.maps.LatLng(-20.303273911288404, -40.31739965836913), //center that your map defaults to
   locationScope:      "vitoria",      //geographical area appended to all address searches
+  defaultZoom:        13,             //zoom level when map is loaded (bigger is more zoomed in)
+
+  //Serra
+  map_centroid_serra:       new google.maps.LatLng(-20.164738, -40.266953),
+  locationScope_serra:      "serra",
+  defaultZoom_serra:        13,
+
   recordName:         "resultado",       //for showing number of results
   recordNamePlural:   "resultados",
-
   searchRadius:       805,            //in meters ~ 1/2 mile
-  defaultZoom:        13,             //zoom level when map is loaded (bigger is more zoomed in)
   addrMarkerImage: 'http://derekeder.com/images/icons/blue-pushpin.png',
   currentPinpoint: null,
 
   initialize: function() {
     $( "#result_count" ).html("");
 
-    geocoder = new google.maps.Geocoder();
-    var myOptions = {
-      zoom: MapsLib.defaultZoom,
-      center: MapsLib.map_centroid,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+	geocoder = new google.maps.Geocoder();
+
+	var city = MapsLib.getParam("sessid").city;
+	console.log(city);
+	if (city == 'serra'){
+		var myOptions = {
+		  zoom: MapsLib.defaultZoom_serra,
+		  center: MapsLib.map_centroid_serra,
+		  mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+	}else{
+		var myOptions = {
+		  zoom: MapsLib.defaultZoom,
+		  center: MapsLib.map_centroid,
+		  mapTypeId: google.maps.MapTypeId.ROADMAP
+		};
+	}
+
+
+
     map = new google.maps.Map($("#map_canvas")[0],myOptions);
 
     // maintains map centerpoint for responsive design
@@ -74,6 +94,7 @@ var MapsLib = {
   },
 
   doSearch: function(location) {
+
     MapsLib.clearSearch();
     var address = $("#search_address").val();
     MapsLib.searchRadius = $("#search_radius").val();
@@ -276,5 +297,22 @@ var MapsLib = {
   convertToPlainString: function(text) {
     if (text == undefined) return '';
   	return decodeURIComponent(text);
-  }
+  },
+
+
+	getParam: function (name)
+	{
+		var vars = [], hash;
+		var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+
+		for(var i = 0; i < hashes.length; i++)
+		{
+			hash = hashes[i].split('=');
+			hash[1] = unescape(hash[1]);
+			vars.push(hash[0]);
+			vars[hash[0]] = hash[1];
+		}
+
+		return vars;
+	}
 }
